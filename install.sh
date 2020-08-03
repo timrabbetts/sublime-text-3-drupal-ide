@@ -17,10 +17,10 @@ clear
 echoheader "Sublime Drupal Editor Installer"
 
 echotext "Install dependencies (software-properties-common,apt-transport-https,wget,nodejs)"
-sudo apt -qq -y update
-sudo apt -qq -y install software-properties-common apt-transport-https wget
-sudo apt -qq -y install nodejs
-sudo apt -qq -y install php-cli
+sudo apt update -qq -y
+sudo apt install software-properties-common apt-transport-https wget -qq -y
+sudo apt install nodejs -qq -y
+sudo apt install php-cli php-xml php-mbstring -qq -y
 
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
@@ -29,22 +29,18 @@ sudo chown -R $USER ~/.composer
 composer global require "squizlabs/php_codesniffer=*"
 
 composer global require drupal/coder
-phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+phpcs --config-set installed_paths /home/tim/.config/composer/vendor/drupal/coder/coder_sniffer
 
 echosuccess "Install dependencies"
 
-echotext "Get atom gpgkey"
+echotext "Get sublime gpgkey"
 wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
-echosuccess "Get atom gpgkey"
+echosuccess "Get sublime gpgkey"
 
 echotext "Add repository"
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 echosuccess "Add repository"
 
 echotext "Install sublime"
-sudo apt -qq install sublime-text
+sudo apt install sublime-text -qq -y
 echosuccess "Install sublime"
-
-#echotext "Install atom packages"
-#source install_atom_packages.sh
-#echosuccess "Install atom packages"
